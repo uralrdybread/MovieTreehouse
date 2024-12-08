@@ -1,21 +1,34 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Models\Movie;
 
 Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/about', function () {
-    return view('about');
+Route::get('/movies', function () {
+    return view('movies', [
+        'movies' => Movie::getMovies() // Retrieve all movies
+    ]);
+});
+
+Route::get('/movies/{id}', function ($id) {
+    // Cast $id to an integer
+    $movie = Movie::find((int) $id); 
+
+    // Handle movie not found
+    if (!$movie) {
+        abort(404, 'Movie not found');
+    }
+
+    return view('movie', ['movie' => $movie]); // Pass the movie to the view
 });
 
 Route::get('/contact', function () {
     return view('contact');
 });
-
-
 
 Route::get('/dashboard', function () {
     return view('dashboard');
