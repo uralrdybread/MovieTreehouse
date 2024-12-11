@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Movie extends Model
 {
-    protected $table = 'movie_listings';
+    protected $table = 'movies';
 
     protected $fillable = [];
 }
