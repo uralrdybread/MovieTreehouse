@@ -10,7 +10,7 @@ Route::get('/', function () {
 
 Route::get('/movies', function () {
     return view('movies', [
-        'movies' => Movie::getMovies() // Retrieve all movies
+        'movies' => Movie::all() // Retrieve all movies
     ]);
 });
 
