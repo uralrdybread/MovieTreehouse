@@ -8,15 +8,7 @@
     <title>Home Page</title>
 </head>
 
-<body>
-    <!--
-  This example requires updating your template:
-
-  ```
-  <html class="h-full bg-gray-100">
-  <body class="h-full">
-  ```
--->
+<body class="h-full">
     <div class="min-h-full">
         <nav class="bg-gray-800">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -30,7 +22,9 @@
                             <div class="ml-10 flex items-baseline space-x-4">
                                 <x-nav-link href="/" :active="request()->is('/')">Home</x-nav-link>
                                 <x-nav-link href="movies" :active="request()->is('movies')">Movies</x-nav-link>
-                                <x-nav-link href="contact" :active="request()->is('contact')" type="button">Contact</x-nav-link>
+                                <x-nav-link href="about" :active="request()->is('about')" type="button">About</x-nav-link>
+                                <x-nav-link href="find" :active="request()->is('find')" type="button">Find</x-nav-link>
+                                <x-nav-link href="support" :active="request()->is('support')" type="button">Support</x-nav-link>
                             </div>
                         </div>
                     </div>
@@ -92,10 +86,14 @@
                     <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                     <a href="/" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white"
                         aria-current="page">Home</a>
+                    <a href="/movies"
+                        class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Movies</a>
                     <a href="/about"
                         class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">About</a>
-                    <a href="/contact"
-                        class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Contact</a>
+                    <a href="/find"
+                        class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Find</a>
+                    <a href="/support"
+                        class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Support</a>
                 </div>
                 <div class="border-t border-gray-700 pb-3 pt-4">
                     <div class="flex items-center px-5">

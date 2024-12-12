@@ -26,8 +26,16 @@ Route::get('/movies/{id}', function ($id) {
     return view('movie', ['movie' => $movie]); // Pass the movie to the view
 });
 
-Route::get('/contact', function () {
-    return view('contact');
+Route::get('/about', function () {
+    return view('about');
+});
+
+Route::get('/find', function () {
+    return view('find');
+});
+
+Route::get('/support', function () {
+    return view('support');
 });
 
 Route::get('/dashboard', function () {
