@@ -119,7 +119,7 @@
             </div>
         </nav>
 
-        <header class="bg-white shadow">
+        <header class="bg-gray-100 shadow">
             <div class="mx-auto max-w-7xl px-6 py-8 sm:px-8 lg:px-10">
                 <h1 class="text-3xl font-bold tracking-tight text-gray-800">{{ $heading }}</h1>
             </div>
