@@ -8,8 +8,11 @@
         @foreach ($movies as $movie)
             <x-movie-card :movie="$movie" />
         @endforeach
-
     </div>
 
+    <!-- Pagination Links -->
+    <div class="mt-4">
+        {{ $movies->links() }}
+    </div>
 
 </x-layout>
