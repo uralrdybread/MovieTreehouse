@@ -9,6 +9,11 @@ class Movie extends Model
 {
     use HasFactory;
 
+    public function comments()
+{
+    return $this->hasMany(Comment::class);
+}
+
     protected $fillable = [
         'rating',
         'title',

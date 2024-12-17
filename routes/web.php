@@ -3,6 +3,7 @@
 use App\Models\Movie;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
@@ -10,6 +11,8 @@ Route::get('/', function () {
 });
 
 Route::resource('movies', MovieController::class);
+
+Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 
 Route::get('/about', function () {
     return view('about');

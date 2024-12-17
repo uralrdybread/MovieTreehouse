@@ -37,7 +37,8 @@ class MovieController extends Controller
 
     public function show(Movie $movie)
     {
-        return view('movies.show', compact('movie'));
+    $movie->load('comments.user');
+    return view('movies.show', compact('movie'));
     }
 
     public function edit(Movie $movie)
