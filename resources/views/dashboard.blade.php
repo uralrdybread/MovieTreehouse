@@ -1,10 +1,4 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-
+<x-layout>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white shadow-sm sm:rounded-lg p-6">
@@ -12,9 +6,12 @@
                     <!-- Welcome Section -->
                     <div class="welcome-section bg-gray-50 p-6 rounded-lg shadow-lg">
                         <div class="flex items-center space-x-4">
-                            <img src="[user-avatar]" alt="[Username] Avatar" class="w-16 h-16 rounded-full object-cover">
+                            <!-- Placeholder Avatar -->
+                            <img src="https://via.placeholder.com/150" alt="[Username] Avatar"
+                                class="w-16 h-16 rounded-full object-cover">
                             <div>
-                                <h1 class="text-2xl font-semibold text-gray-800">Welcome back, [Username]!</h1>
+                                <h1 class="text-2xl font-semibold text-gray-800">Welcome back,
+                                    {{ Auth::user()->username }}</h1>
                                 <p class="text-gray-500">Movies Favorited: [Count] | Reviews Written: [Count] |
                                     Watchlist: [Count]</p>
                             </div>
@@ -31,7 +28,8 @@
                             <li class="text-gray-700">Reviewed <a href="/movies/1"
                                     class="text-blue-600 hover:underline">Inception</a>: ⭐⭐⭐⭐⭐</li>
                             <li class="text-gray-700">Added <a href="/movies/2"
-                                    class="text-blue-600 hover:underline">The Matrix</a> to favorites.</li>
+                                    class="text-blue-600 hover:underline">The
+                                    Matrix</a> to favorites.</li>
                         </ul>
                     </div>
 
@@ -60,4 +58,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-layout>
