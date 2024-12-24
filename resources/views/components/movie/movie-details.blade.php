@@ -4,6 +4,16 @@
             <i class="fa fa-arrow-alt-circle-left"></i>
             Back To Listings
         </a>
+        @if ($movie->status !== 'checked out')
+            <form action="{{ route('movies.borrow', $movie->id) }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-primary">
+                    Borrow Movie
+                </button>
+            </form>
+        @else
+            <p class="text-danger">This movie is currently checked out.</p>
+        @endif
         <div class="flex space-x-3 ml-4">
             <a href="/edit" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded">Edit</a>
             <!-- Delete Form For Admin -->

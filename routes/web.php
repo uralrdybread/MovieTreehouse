@@ -5,12 +5,16 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BorrowingController;
 
 Route::get('/', function () {
     return view('home');
 });
 
 Route::resource('movies', MovieController::class);
+
+Route::post('/movies/{movie}/borrow', [BorrowingController::class, 'borrow'])->name('movies.borrow');
+Route::post('/movies/{movie}/return', [BorrowingController::class, 'return'])->name('movies.return');
 
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 
