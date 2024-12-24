@@ -16,8 +16,16 @@
                                     Watchlist: [Count]</p>
                             </div>
                         </div>
-                        <div class="mt-4">
+                        <div class="mt-4 flex items-center space-x-4">
                             <a href="/profile/edit" class="text-blue-600 hover:underline">Edit Profile</a>
+                            <!-- Logout Button -->
+                            <form action="{{ route('logout') }}" method="POST" class="inline">
+                                @csrf
+                                <button type="submit"
+                                    class="py-2 px-4 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none">
+                                    Logout
+                                </button>
+                            </form>
                         </div>
                     </div>
 
