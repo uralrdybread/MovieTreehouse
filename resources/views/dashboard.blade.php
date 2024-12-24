@@ -33,27 +33,7 @@
                         </ul>
                     </div>
 
-                    <h3>Your Borrowed Movies</h3>
-                    <ul>
-                        @forelse (Auth::user()->borrowedMovies as $movie)
-                            @if (is_null($movie->pivot->returned_at))
-                                <li>
-                                    {{ $movie->title }} - Borrowed on
-                                    {{ \Carbon\Carbon::parse($movie->pivot->borrowed_at)->format('M d, Y') }}
-                                    <form action="{{ route('movies.return', $movie->id) }}" method="POST"
-                                        style="display: inline;">
-                                        @csrf
-                                        <button type="submit" class="btn btn-danger">Return Movie</button>
-                                    </form>
-                                </li>
-                            @else
-                                <li>{{ $movie->title }} (Returned on
-                                    {{ \Carbon\Carbon::parse($movie->pivot->returned_at)->format('M d, Y') }})</li>
-                            @endif
-                        @empty
-                            <p>You have not borrowed any movies.</p>
-                        @endforelse
-                    </ul>
+
 
                     <!-- Quick Actions Section -->
                     <div class="quick-actions bg-gray-50 p-6 rounded-lg shadow-lg">
@@ -67,6 +47,32 @@
                                 a Review</button>
                         </div>
                     </div>
+                </div>
+
+                <div class="quick-actions bg-gray-50 p-6 rounded-lg shadow-lg">
+                    <h3>Your Borrowed Movies</h3>
+                    <ul>
+                        @forelse (Auth::user()->borrowedMovies as $movie)
+                            @if (is_null($movie->pivot->returned_at))
+                                <li>
+                                    {{ $movie->title }} - Borrowed on
+                                    {{ \Carbon\Carbon::parse($movie->pivot->borrowed_at)->format('M d, Y') }}
+                                    <form action="{{ route('movies.return', $movie->id) }}" method="POST"
+                                        style="display: inline;">
+                                        @csrf
+                                        <button type="submit"
+                                            class="py-2 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none">Return
+                                            Movie</button>
+                                    </form>
+                                </li>
+                            @else
+                                <li>{{ $movie->title }} (Returned on
+                                    {{ \Carbon\Carbon::parse($movie->pivot->returned_at)->format('M d, Y') }})</li>
+                            @endif
+                        @empty
+                            <p>You have not borrowed any movies.</p>
+                        @endforelse
+                    </ul>
                 </div>
 
                 <!-- Recommendations Section -->
