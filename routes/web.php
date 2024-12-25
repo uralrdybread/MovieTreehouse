@@ -40,4 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/movie/{movieName}', [MovieController::class, 'showMoviePoster']);
+
+
 require __DIR__.'/auth.php';

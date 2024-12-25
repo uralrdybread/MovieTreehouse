@@ -12,7 +12,8 @@
                 </button>
             </form>
         @else
-            <p class="">This movie is currently checked out.</p>
+            <p class="text-red-600 font-semibold bg-red-50 p-2 rounded shadow-sm">This movie is currently checked out.
+            </p>
         @endif
         <div class="flex space-x-3 ml-4">
             <a href="/edit" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded">Edit</a>

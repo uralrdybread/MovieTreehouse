@@ -10,6 +10,11 @@ class BorrowingController extends Controller
 {
     public function borrow(Request $request, $movieId)
     {
+        // Check if the user is logged in
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'You must be logged in to borrow a movie.');
+        }
+
         $movie = Movie::findOrFail($movieId);
 
         if ($movie->status === 'checked out') {
@@ -24,6 +29,11 @@ class BorrowingController extends Controller
 
     public function return(Request $request, $movieId)
     {
+        // Check if the user is logged in
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'You must be logged in to return a movie.');
+        }
+
         $movie = Movie::findOrFail($movieId);
 
         $borrowRecord = Auth::user()->borrowedMovies()->where('movie_id', $movieId)->whereNull('returned_at')->first();
