@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 use App\Services\TMDbService;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
 
 class MovieController extends Controller
 {
@@ -19,27 +22,53 @@ class MovieController extends Controller
         return view('movies.create');
     }
 
-    public function store(Request $request)
+
+        public function store(Request $request)
     {
-        // $validated = $request->validate([
-        //     'title' => 'required|string|max:255',
-        //     'rating' => 'required|in:G,PG,PG-13,R,NC-17',
-        //     'release_year' => 'nullable|integer|min:1900|max:' . date('Y'),
-        //     'genre' => 'nullable|string|max:255',
-        //     'description' => 'nullable|string',
-        //     'status' => 'required|in:available,checked out',
-        //     'stars' => 'nullable|integer|min:1|max:5',
-        // ]);
+        // Validate the request
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'release_year' => 'required|integer|min:1900|max:' . date('Y'),
+            'genre' => 'required|string|max:255',
+            'rating' => 'required|numeric|min:0|max:10',
+            'poster' => 'nullable|file|image|max:10240', // 10MB max
+        ]);
 
-        // Movie::create($validated);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors(),
+            ], 422);
+        }
 
-        // return redirect()->route('movies.index')->with('success', 'Movie created successfully.');
+        // Handle file upload
+        $posterPath = null;
+        if ($request->hasFile('poster')) {
+            $posterPath = $request->file('poster')->store('posters', 'public');
+        }
+
+        // Create the movie
+        $movie = Movie::create([
+        'title' => $request->input('title'),
+        'description' => $request->input('description'),
+        'release_year' => $request->input('release_year'),
+        'genre' => $request->input('genre'),
+        'rating' => $request->input('rating'),
+        'poster_path' => $posterPath,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Movie created successfully!',
+            'data' => $movie,
+        ], 201);
     }
 
     public function show(Movie $movie)
     {
-    $movie->load('comments.user');
-    return view('movies.show', compact('movie'));
+        $movie->load('comments.user');
+        return view('movies.show', compact('movie'));
     }
 
     public function edit(Movie $movie)
@@ -71,49 +100,27 @@ class MovieController extends Controller
         // return redirect()->route('movies.index')->with('success', 'Movie deleted successfully.');
     }
 
-    protected $tmdbService;
-
-    // Inject the TMDbService into the controller
-    public function __construct(TMDbService $tmdbService)
-    {
-        $this->tmdbService = $tmdbService;
-    }
-
-    // Show movie poster
-    public function showMoviePoster($movieName)
-    {
-        // Use the searchMovies method of the TMDbService
-        $movies = $this->tmdbService->searchMovies($movieName);
-
-        // Check if any movie was found
-        if (isset($movies['results'][0])) {
-            $movie = $movies['results'][0];
-            $posterUrl = $this->tmdbService->getPosterUrl($movie['poster_path']);
-            return view('movie-poster', ['posterUrl' => $posterUrl, 'movie' => $movie]);
-        }
-
-        return view('movie-poster', ['posterUrl' => null, 'movie' => null]);
-    }
-
-
-    // Create movie API logic
-    public function fetchMovieData(Request $request, TMDbService $tmdbService)
+    
+    public function fetchTMDB(Request $request)
 {
-    $title = $request->query('title');
-    $movies = $tmdbService->searchMovies($title);
+    $tmdbId = $request->input('tmdb_id');
+    $apiKey = config('services.tmdb.api_key');
+    $url = "https://api.themoviedb.org/3/movie/{$tmdbId}?api_key={$apiKey}";
 
-    if (isset($movies['results'][0])) {
-        $movie = $movies['results'][0];
+    $response = Http::get($url);
+
+    if ($response->successful()) {
+        $movieData = $response->json();
         return response()->json([
-            'success' => true,
-            'rating' => $movie['vote_average'] ?? null,
-            'release_year' => substr($movie['release_date'], 0, 4) ?? null,
-            'genre' => implode(', ', array_column($movie['genre_ids'] ?? [], 'name')) ?? null,
-            'description' => $movie['overview'] ?? null,
-            'poster_url' => $tmdbService->getPosterUrl($movie['poster_path']) ?? null,
+            'title' => $movieData['title'] ?? '',
+            'description' => $movieData['overview'] ?? '',
+            'release_date' => $movieData['release_date'] ?? '',
+            'genres' => $movieData['genres'] ?? []
         ]);
+    } else {
+        return response()->json(['error' => 'Failed to fetch movie details. Please check the TMDB ID.'], 400);
     }
-
-    return response()->json(['success' => false, 'message' => 'Movie not found']);
 }
-}
+    
+    
+};

@@ -1,11 +1,23 @@
 <x-layout>
-    <form method="POST" action="{{ route('movies.store') }}" enctype="multipart/form-data" class="space-y-12">
+    <form method="POST" action="{{ route('movies.store') }}" enctype="multipart/form-data" class="space-y-12"
+        id="movie-form">
         @csrf
         <div class="border-b border-gray-900/10 pb-12">
             <h2 class="text-base font-semibold text-gray-900">Add a New Movie</h2>
             <p class="mt-1 text-sm text-gray-600">Provide details about the movie you wish to add.</p>
 
             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                <!-- TMDB ID -->
+                <div class="sm:col-span-4">
+                    <label for="tmdb_id" class="block text-sm font-medium text-gray-900">TMDB ID</label>
+                    <div class="mt-2">
+                        <input type="text" name="tmdb_id" id="tmdb_id"
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-indigo-600 sm:text-sm"
+                            placeholder="e.g., 550 (for Fight Club)">
+                    </div>
+                    <p class="mt-2 text-sm text-gray-600">Enter the TMDB ID to auto-fill movie details.</p>
+                </div>
+
                 <!-- Movie Title -->
                 <div class="sm:col-span-4">
                     <label for="title" class="block text-sm font-medium text-gray-900">Movie Title</label>
@@ -24,16 +36,19 @@
                             class="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-indigo-600 sm:text-sm"
                             placeholder="Write a short summary of the movie." required></textarea>
                     </div>
-                    <p class="mt-3 text-sm text-gray-600">Keep it brief and engaging.</p>
                 </div>
 
                 <!-- Release Date -->
                 <div class="sm:col-span-2">
-                    <label for="release_date" class="block text-sm font-medium text-gray-900">Release Date</label>
+                    <label for="release_year" class="block text-sm font-medium text-gray-900">Release Year</label>
                     <div class="mt-2">
-                        <input type="date" name="release_date" id="release_date"
+                        <select name="release_year" id="release_year"
                             class="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline outline-1 outline-gray-300 focus:outline-indigo-600 sm:text-sm"
                             required>
+                            @for ($year = date('Y'); $year >= 1900; $year--)
+                                <option value="{{ $year }}">{{ $year }}</option>
+                            @endfor
+                        </select>
                     </div>
                 </div>
 
@@ -44,39 +59,6 @@
                         <input type="text" name="genre" id="genre"
                             class="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-indigo-600 sm:text-sm"
                             placeholder="e.g., Drama, Action, Comedy" required>
-                    </div>
-                </div>
-
-                <!-- Rating -->
-                <div class="sm:col-span-2">
-                    <label for="rating" class="block text-sm font-medium text-gray-900">Rating</label>
-                    <div class="mt-2">
-                        <input type="number" name="rating" id="rating"
-                            class="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-indigo-600 sm:text-sm"
-                            placeholder="e.g., 8.5" step="0.1" min="0" max="10" required>
-                    </div>
-                </div>
-
-                <!-- Poster -->
-                <div class="col-span-full">
-                    <label for="poster" class="block text-sm font-medium text-gray-900">Poster</label>
-                    <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-                        <div class="text-center">
-                            <svg class="mx-auto h-12 w-12 text-gray-300" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M3 16l4-4a4 4 0 016 0l4-4a4 4 0 110 6l-4 4a4 4 0 01-6 0l-4 4"></path>
-                            </svg>
-                            <div class="mt-4 flex text-sm text-gray-600">
-                                <label for="poster-upload"
-                                    class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 hover:text-indigo-500">
-                                    <span>Upload a file</span>
-                                    <input id="poster-upload" name="poster" type="file" class="sr-only">
-                                </label>
-                                <p class="pl-1">or drag and drop</p>
-                            </div>
-                            <p class="text-xs text-gray-600">PNG, JPG, GIF up to 10MB</p>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -91,4 +73,29 @@
             </button>
         </div>
     </form>
+
+    <script>
+        document.getElementById('tmdb_id').addEventListener('change', async function() {
+            const tmdbId = this.value;
+            if (!tmdbId) return;
+
+            try {
+                const response = await fetch(`/api/tmdb/${tmdbId}`);
+                if (response.ok) {
+                    const movie = await response.json();
+
+                    document.getElementById('title').value = movie.title || '';
+                    document.getElementById('description').value = movie.description || '';
+                    document.getElementById('release_year').value = movie.release_date ? new Date(movie
+                        .release_date).getFullYear() : '';
+                    document.getElementById('genre').value = movie.genres ? movie.genres.map(genre => genre
+                        .name).join(', ') : '';
+                } else {
+                    alert('Failed to fetch movie details. Please check the TMDB ID.');
+                }
+            } catch (error) {
+                alert('Error fetching movie details. Please try again.');
+            }
+        });
+    </script>
 </x-layout>

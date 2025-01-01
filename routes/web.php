@@ -15,6 +15,9 @@ Route::resource('movies', MovieController::class);
 
 Route::post('/movies/{movie}/borrow', [BorrowingController::class, 'borrow'])->name('movies.borrow');
 Route::post('/movies/{movie}/return', [BorrowingController::class, 'return'])->name('movies.return');
+Route::get('/movies/fetch-details', [MovieController::class, 'fetchTMDB'])->name('movies.fetchTMDB');
+
+Route::get('/tmdb/{tmdbId}', [MovieController::class, 'fetchTMDB']);
 
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 
@@ -40,7 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/movie/{movieName}', [MovieController::class, 'showMoviePoster']);
+
 
 
 require __DIR__.'/auth.php';
