@@ -13,15 +13,9 @@ return new class extends Migration
     {
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
+            $table->string('tmdb_id')->unique();
+            $table->enum('status', ['available', 'borrowed'])->default('available');
             $table->timestamps();
-            $table->enum('rating', ['G', 'PG', 'PG-13', 'R', 'NC-17']);
-            $table->string('title'); // Movie title
-            $table->string('director')->nullable(); // Director's name (optional)
-            $table->year('release_year')->nullable(); // Release year
-            $table->string('genre')->nullable(); // Genre (e.g., Drama, Comedy)
-            $table->text('description')->nullable(); // Description of the movie
-            $table->enum('status', ['available', 'checked out'])->default('available'); // Availability status
-            $table->unsignedTinyInteger('stars')->nullable(); // Optional average rating (e.g., 1-5 scale)
         });
     }
 
