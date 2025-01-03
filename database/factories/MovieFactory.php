@@ -17,14 +17,8 @@ class MovieFactory extends Factory
     public function definition(): array
     {
         return [
-            'rating' => $this->faker->randomElement(['G', 'PG', 'PG-13', 'R', 'NC-17']), // Random rating
-            'title' => $this->faker->sentence(3), // Random 3-word title
-            'director' => $this->faker->name(), // Random director's name
-            'release_year' => $this->faker->year(), // Random year
-            'genre' => $this->faker->randomElement(['Drama', 'Comedy', 'Action', 'Horror', 'Sci-Fi']), // Random genre
-            'description' => $this->faker->paragraph(), // Random description
-            'status' => $this->faker->randomElement(['available', 'checked out']), // Random status
-            'stars' => $this->faker->numberBetween(1, 5), // Random star rating (1-5)
+            'tmdb_id' => $this->faker->unique()->numberBetween(100, 1000), // Random TMDB ID
+            'status' => 'available',
         ];
     }
 }
