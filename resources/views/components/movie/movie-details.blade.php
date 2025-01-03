@@ -8,17 +8,12 @@
 
         <!-- Borrow Button or Status -->
         @if ($movie->status === 'available')
-            <!-- Change to 'available' to show the button only when available -->
             <form action="{{ route('movies.borrow', $movie->id) }}" method="POST">
                 @csrf
-                <button type="submit" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded">
-                    Borrow Movie
-                </button>
+                <button type="submit" class="btn btn-primary">Borrow Movie</button>
             </form>
         @else
-            <p class="text-red-600 font-semibold bg-red-50 p-2 rounded shadow-sm">
-                This movie is currently checked out.
-            </p>
+            <p>This movie is currently checked out.</p>
         @endif
 
         <!-- Edit and Delete Buttons (Only for Admins) -->
@@ -81,7 +76,7 @@
 
             <!-- Poster -->
             <img src="https://image.tmdb.org/t/p/w500{{ $movieDetails['poster_path'] }}"
-                alt="{{ $movieDetails['title'] }}" class="rounded-lg shadow-md mt-4">
+                alt="{{ $movieDetails['title'] }}" class="rounded-lg shadow-md mt-4 mx-auto">
         @endif
 
     </div>

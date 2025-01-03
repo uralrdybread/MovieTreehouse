@@ -10,7 +10,9 @@ class TMDbService
     public function fetchMovieDataById($tmdbId)
     {
         $apiKey = env('TMDB_API_KEY');
-        $url = "https://api.themoviedb.org/3/movie/{$tmdbId}?api_key={$apiKey}";
+        
+        // Add the append_to_response=credits parameter to fetch cast information
+        $url = "https://api.themoviedb.org/3/movie/{$tmdbId}?api_key={$apiKey}&append_to_response=credits";
 
         $response = Http::get($url);
 

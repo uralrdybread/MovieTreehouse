@@ -22,7 +22,7 @@ class MovieController extends Controller
 
         // Add TMDB details without breaking pagination
         $movies->each(function ($movie) {
-            $movie->tmdb_details = $this->tmdbService->fetchMovieDataById($movie->tmdb_id);
+        $movie->tmdb_details = $this->tmdbService->fetchMovieDataById($movie->tmdb_id);
         });
 
         return view('movies.index', compact('movies'));

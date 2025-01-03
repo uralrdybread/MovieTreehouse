@@ -21,22 +21,19 @@ class Movie extends Model
         'stars',
     ];
 
+     const STATUS_AVAILABLE = 'available';
+    const STATUS_BORROWED = 'borrowed';
+
     public function comments()
     {
         return $this->hasMany(Comment::class);
     }
 
-    protected $casts = [
-    'pivot.borrowed_at' => 'datetime',
-    'pivot.returned_at' => 'datetime',
-];
-
+    // Relationship to get the users who borrowed the movie
     public function borrowedBy()
     {
-        return $this->belongsToMany(User::class, 'borrowed_movies') // Correct table name
+        return $this->belongsToMany(User::class, 'borrowed_movies')
                     ->withPivot('borrowed_at', 'returned_at')
                     ->withTimestamps();
     }
-
-    
 }

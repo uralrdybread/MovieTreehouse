@@ -57,14 +57,24 @@
                     </div>
                 </div>
 
+
                 <div class="quick-actions bg-gray-50 p-6 rounded-lg shadow-lg">
                     <h3>Your Borrowed Movies</h3>
                     <ul>
                         @forelse (Auth::user()->borrowedMovies as $movie)
-                            @if (is_null($movie->pivot->returned_at))
-                                <li>
-                                    {{ $movie->title }} - Borrowed on
-                                    {{ \Carbon\Carbon::parse($movie->pivot->borrowed_at)->format('M d, Y') }}
+                            @php
+                                $borrowedAt = \Carbon\Carbon::parse($movie->pivot->borrowed_at);
+                                $returnedAt = $movie->pivot->returned_at
+                                    ? \Carbon\Carbon::parse($movie->pivot->returned_at)
+                                    : null;
+                            @endphp
+                            <li>
+                                <!-- Display the title of the movie -->
+                                <strong>{{ $movie->title }}</strong>
+
+                                @if (is_null($returnedAt))
+                                    <!-- If the movie is still borrowed, show the borrowed date -->
+                                    - Currently Borrowed (Borrowed on {{ $borrowedAt->format('M d, Y') }})
                                     <form action="{{ route('movies.return', $movie->id) }}" method="POST"
                                         style="display: inline;">
                                         @csrf
@@ -72,11 +82,11 @@
                                             class="py-2 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none">Return
                                             Movie</button>
                                     </form>
-                                </li>
-                            @else
-                                <li>{{ $movie->title }} (Returned on
-                                    {{ \Carbon\Carbon::parse($movie->pivot->returned_at)->format('M d, Y') }})</li>
-                            @endif
+                                @else
+                                    <!-- If the movie has been returned, show the return date -->
+                                    - Returned on {{ $returnedAt->format('M d, Y') }}
+                                @endif
+                            </li>
                         @empty
                             <p>You have not borrowed any movies.</p>
                         @endforelse

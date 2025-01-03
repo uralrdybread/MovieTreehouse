@@ -26,7 +26,8 @@
                                 {{ $movie->tmdb_details['title'] }}
                             </a>
                         </h2>
-                        <p class="text-gray-700 text-sm">{{ $movie->tmdb_details['overview'] }}</p>
+                        <p class="text-gray-700 text-sm">
+                            {{ \Illuminate\Support\Str::limit($movie->tmdb_details['overview'], 150) }}</p>
                         <p class="text-gray-500 text-sm mt-2">Release Date: {{ $movie->tmdb_details['release_date'] }}
                         </p>
                         <p class="mt-4">
