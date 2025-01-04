@@ -28,7 +28,7 @@
                         </div>
                     </div>
                     <div class="hidden md:block">
-                        <div class="ml-4 flex items-center md:ml-6">
+                        <div class="ml-4 flex items-center md:ml-6 space-x-4"> <!-- Added space-x-4 for spacing -->
                             <button type="button"
                                 class="relative rounded-full bg-green-500 p-1 text-gray-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                 <span class="absolute -inset-1.5"></span>
@@ -42,22 +42,43 @@
 
                             <!-- Profile dropdown -->
                             <div class="relative ml-3">
-                                <div>
-                                    <button type="button"
-                                        class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                                        id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                                        <span class="absolute -inset-1.5"></span>
-                                        <span class="sr-only">Open user menu</span>
-                                        <img class="h-8 w-8 rounded-full"
-                                            src="{{ auth()->user()->avatar ?? 'https://via.placeholder.com/32/cccccc/000000?text=Avatar' }}"
-                                            alt="User Avatar">
-                                    </button>
-                                </div>
+                                <div class="flex items-center space-x-4"> <!-- Added flex and space-x-4 here -->
+                                    @auth
+                                        <button type="button"
+                                            class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                                            id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                            <span class="absolute -inset-1.5"></span>
+                                            <span class="sr-only">Open user menu</span>
+                                            <img class="h-8 w-8 rounded-full"
+                                                src="{{ auth()->user()->avatar ?? 'https://via.placeholder.com/32/cccccc/000000?text=Avatar' }}"
+                                                alt="User Avatar">
+                                        </button>
 
+                                        <!-- Logout Button with margin -->
+                                        <a href="{{ route('logout') }}"
+                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                            class="py-2 px-4 bg-red-500 text-white rounded-lg hover:bg-red-600">Logout</a>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                                            @csrf
+                                        </form>
+                                    @else
+                                        <!-- Login and Register Buttons -->
+                                        <div class="ml-3">
+                                            <div class="text-sm font-medium text-gray-400">
+                                                <a href="{{ route('login') }}" class="text-green-500 hover:underline">Log
+                                                    in</a>
+                                                or
+                                                <a href="{{ route('register') }}"
+                                                    class="text-green-500 hover:underline">Register</a>
+                                            </div>
+                                        </div>
+                                    @endauth
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!--Mobile button component. -->
+
+                    <!-- Mobile button component. -->
                     <x-navbar.mobile-button />
                 </div>
             </div>
@@ -71,13 +92,13 @@
                 <h1 class="text-3xl font-bold tracking-tight text-gray-800">Heading</h1>
             </div>
         </header>
+
         <main>
             <div class="mx-auto max-w-7xl px-6 py-8 sm:px-8 lg:px-10">
-                {{ $slot }} </div>
+                {{ $slot }}
+            </div>
         </main>
     </div>
-
-
 </body>
 
 </html>
