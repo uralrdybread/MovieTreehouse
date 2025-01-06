@@ -51,4 +51,10 @@ A web application inspired by the "little free library" concept but reimagined f
 
 1. Clone the repository:  
    ```bash  
-   git clone https://github.com/your-username/movie-library.git  
+   git clone https://github.com/your-username/movie-library.git
+
+
+![dashboard](https://github.com/user-attachments/assets/b8ebe31d-cbcc-49e9-9d6e-6fdeca6cc03d)
+![mobile](https://github.com/user-attachments/assets/077634fc-4c7b-44c7-8b74-276ae7e13da9)
+![movies](https://github.com/user-attachments/assets/4980cd18-b160-40fa-8e58-ae15041dc77c)
+
