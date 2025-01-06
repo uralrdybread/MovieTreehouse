@@ -39,7 +39,7 @@ A web application inspired by the "little free library" concept but reimagined f
   - Fetch movie information dynamically, including posters, genres, actors, and directors.  
 
 ### Database  
-- **MySQL**: Used for storing user data, movie availability, and comments.  
+- **SQLlite**: Used for storing user data, movie availability, and comments.  
 
 ### Other Tools  
 - Blade Templating for dynamic and reusable templates.  
